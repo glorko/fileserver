@@ -1,4 +1,5 @@
-import org.springframework.beans.factory.annotation.Autowired;
+package net.punklan.glorfindeil.fileserver;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
