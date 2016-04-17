@@ -1,11 +1,18 @@
 package net.punklan.glorfindeil.fileserver;
 
-import org.junit.Before;
-import org.junit.Test;
+import net.punklan.glorfindeil.fileserver.api.FileServerAPI;
+import org.apache.commons.io.FileUtils;
+import org.junit.*;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import redis.embedded.RedisServer;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,14 +22,50 @@ import static org.junit.Assert.*;
 /**
  * Created by glorfindeil on 16.04.16.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(FileServerApplication.class)
+@TestPropertySource(locations = "classpath:test.properties")
 public class FileServerAPITest {
 
+    @Value("${spring.redis.port}")
+    String redisPort;
+
+    @Value("${net.punklan.glorfindeil.working.folder}")
+    String fileFolder;
+
+    String fileTestHash;
+    String testFileName = "testFile1.txt";
+    byte[] file;
     @Autowired
     FileServerAPI api;
 
+    static RedisServer redisServer;
+
+
+    @BeforeClass
+    public static void setUpAll() throws IOException {
+        redisServer = new RedisServer(6380);
+        redisServer.start();
+
+
+    }
+
+    @AfterClass
+    public static void tearDownAll() {
+        redisServer.stop();
+    }
+
     @Before
     public void setUp() throws Exception {
-        //TODO initalize storage
+        FileUtils.deleteDirectory(new File(fileFolder));
+        Files.createDirectory(Paths.get(fileFolder));
+        file = Files.readAllBytes(Paths.get(testFileName));
+        fileTestHash = api.uploadFile(testFileName, file);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        api.deleteByHash(fileTestHash);
     }
 
     @Test
@@ -32,21 +75,19 @@ public class FileServerAPITest {
 
     @Test
     public void getByHash() throws Exception {
-        byte[] testFile = new byte[0];
-        assertArrayEquals(api.getByHash("testHash"), testFile);
+
+        assertArrayEquals(api.getByHash(fileTestHash), file);
     }
 
     @Test
     public void searchByQuery() throws Exception {
-        assertEquals(api.searchByQuery(".txt").size(), 3);
+        assertEquals(api.searchByQuery("*.txt").size(), 1);
     }
 
     @Test
     public void uploadFile() throws Exception {
-        String testHash = "testHash2";
-        String fileName = "testFile5.txt";
-        Path path = Paths.get(fileName);
-
-        assertEquals(api.uploadFile("testFile5.txt", Files.readAllBytes(path)), testHash);
+        byte[] file2 = Files.readAllBytes(Paths.get("testFile4.xml"));
+        api.uploadFile("testFile4.xml", file2);
+        assertEquals(api.searchByQuery("testFile*").size(), 2);
     }
 }
