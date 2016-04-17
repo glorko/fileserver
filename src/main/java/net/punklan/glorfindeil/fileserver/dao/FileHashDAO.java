@@ -74,6 +74,8 @@ public class FileHashDAO {
     }
 
     public String getPathByHash(String hash) {
-        return (String) template.opsForHash().get(fileHashRedisKey, hash);
+        Object res = template.opsForHash().get(fileHashRedisKey, hash);
+        if (res == null) return null;
+        return res+"";
     }
 }

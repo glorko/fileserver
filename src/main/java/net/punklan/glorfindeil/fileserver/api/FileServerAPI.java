@@ -1,7 +1,6 @@
-package net.punklan.glorfindeil.fileserver;
+package net.punklan.glorfindeil.fileserver.api;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
