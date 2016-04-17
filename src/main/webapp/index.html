@@ -59,12 +59,16 @@
         <tr>
             <th>{{'form.text.hash' | translate}}</th>
             <th>{{'form.text.name' | translate}}</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="(key, value) in data">
             <td><span ng-bind="key"></span></td>
             <td><a ng-href="{{'/fileserver?hash='+key}}">{{value}}</a></span></td>
+            <td>  <button ng-click="delete(key)">
+                <span class="glyphicon glyphicon-remove"></span>
+            </button></td>
         </tr>
         </tbody>
     </table>

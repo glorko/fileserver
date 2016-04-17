@@ -39,8 +39,8 @@ public class FileServerAPIImpl implements FileServerAPI {
     }
 
     @Override
-    @RequestMapping(value = "/fileserver", method = RequestMethod.DELETE)
-    public Boolean deleteByHash(String hash) throws FileServerAPIException {
+    @RequestMapping(value = "/fileserver/{hash}", method = RequestMethod.DELETE)
+    public Boolean deleteByHash(@PathVariable("hash") String hash) throws FileServerAPIException {
 
         String filePath = fileHashDAO.getPathByHash(hash);
         if (filePath == null || filePath.equals("")) return false;

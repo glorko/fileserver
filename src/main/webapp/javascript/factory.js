@@ -36,13 +36,12 @@ fileServer.factory('FileServerAPIService', ['$http', '$q', 'Upload', function ($
         },
 
         deleteByHash: function (hash) {
-            return $http.delete("/fileserver", hash)
+            return $http.delete("/fileserver/"+hash)
                 .then(
                     function (response) {
                         return response.data;
                     },
                     function (errResponse) {
-                        console.error('Error while creating' + entityName);
                         return $q.reject(errResponse);
                     }
                 );

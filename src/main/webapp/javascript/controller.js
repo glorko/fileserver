@@ -28,5 +28,12 @@ fileServer.controller('fileServerController', ['$scope', '$translate', '$locatio
                     $scope.search($scope.search_query);
                 }
             )
+        };
+        $scope.delete = function(hash){
+            FileServerAPIService.deleteByHash(hash).then(
+                function(d){
+                    $scope.search($scope.search_query);
+                }
+            )
         }
     }]);
