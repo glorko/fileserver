@@ -1,12 +1,18 @@
 package net.punklan.glorfindeil.fileserver.api;
 
+import javafx.util.Pair;
 import net.punklan.glorfindeil.fileserver.dao.FileHashDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -16,6 +22,7 @@ import java.util.Map;
  */
 
 @Configuration
+@RestController
 public class FileServerAPIImpl implements FileServerAPI {
 
     @Autowired
@@ -29,6 +36,7 @@ public class FileServerAPIImpl implements FileServerAPI {
     }
 
     @Override
+    @RequestMapping(value = "/fileserver", method = RequestMethod.DELETE)
     public Boolean deleteByHash(String hash) throws FileServerAPIException {
 
         String filePath = fileHashDAO.getPathByHash(hash);
@@ -43,17 +51,18 @@ public class FileServerAPIImpl implements FileServerAPI {
     }
 
     @Override
-    public byte[] getByHash(String hash) throws FileServerAPIException {
+    public Pair<String, byte[]> getByHash(String hash) throws FileServerAPIException {
         String filePath = fileHashDAO.getPathByHash(hash);
         if (filePath == null || filePath.equals("")) throw new FileServerAPIException("File not finded");
         try {
-            return Files.readAllBytes(Paths.get(fileFolder + filePath));
+            return new Pair(filePath, Files.readAllBytes(Paths.get(fileFolder + filePath)));
         } catch (IOException e) {
             throw new FileServerAPIException("Error while reading file " + filePath);
         }
     }
 
     @Override
+    @RequestMapping(value = "/fileserver/search", method = RequestMethod.GET)
     public Map<String, String> searchByQuery(String query) throws FileServerAPIException {
         try {
             return fileHashDAO.searchByValue(query);
@@ -79,4 +88,6 @@ public class FileServerAPIImpl implements FileServerAPI {
 
         return fileHash;
     }
+
+
 }

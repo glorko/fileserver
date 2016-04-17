@@ -1,5 +1,6 @@
 package net.punklan.glorfindeil.fileserver.api;
 
+import javafx.util.Pair;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public interface FileServerAPI {
 
     public Boolean deleteByHash(String hash) throws FileServerAPIException;
 
-    public byte[] getByHash(String hash) throws FileServerAPIException;
+    public Pair<String,byte[]> getByHash(String hash) throws FileServerAPIException;
 
     public Map<String, String> searchByQuery(String query) throws FileServerAPIException;
 
