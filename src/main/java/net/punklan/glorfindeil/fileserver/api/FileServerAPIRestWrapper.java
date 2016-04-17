@@ -34,7 +34,7 @@ public class FileServerAPIRestWrapper {
     }
 
     @RequestMapping(value = "/fileserver", method = RequestMethod.GET)
-    public void download(final HttpServletRequest request, final HttpServletResponse response, @RequestHeader("hash") String hash) throws FileServerAPIException {
+    public void download(final HttpServletRequest request, final HttpServletResponse response, String hash) throws FileServerAPIException {
         Pair<String, byte[]> file = api.getByHash(hash);
         byte[] binaryFile = file.getValue();
         String fileName = file.getKey();

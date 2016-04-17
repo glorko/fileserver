@@ -11,6 +11,12 @@ import java.util.Map;
 @Configuration
 public interface FileServerAPI {
 
+    /**
+     * Deletes file
+     * @param hash - hash for delete
+     * @return true if succesfully deleted, false if file was not found
+     * @throws FileServerAPIException
+     */
     public Boolean deleteByHash(String hash) throws FileServerAPIException;
 
     public Pair<String,byte[]> getByHash(String hash) throws FileServerAPIException;

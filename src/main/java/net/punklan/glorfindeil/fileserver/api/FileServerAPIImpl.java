@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -31,8 +32,10 @@ public class FileServerAPIImpl implements FileServerAPI {
     @Value("${net.punklan.glorfindeil.working.folder}")
     String fileFolder;
 
-    private String getFileHash(byte[] file) {
-        return new String(DigestUtils.md5Digest(file));
+    public static String getFileHash(byte[] file) {
+        byte[] hash = DigestUtils.md5Digest(file);
+        String md5 = new BigInteger(1, hash).toString(16);
+        return md5;
     }
 
     @Override

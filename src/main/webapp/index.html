@@ -28,15 +28,52 @@
 
     <script src="javascript/controller.js"></script>
     <meta charset="UTF-8">
-    <title>{{'form.text.id' | translate}}</title>
+    <title>FileServer</title>
 
 </head>
 
 <body ng-app="fileServer" ng-cloak>
-
-
 <div ng-controller="fileServerController as ctrl">
-    <span>{{dataTest}}</span>
+    <ul>
+        <li><a href="" ng-click="changeLanguage('en')">en</a>
+        <li><a href="" ng-click="changeLanguage('ru')">ru</a>
+    </ul>
+    <span id="fileselect" class="btn btn-default btn-file">
+                                    Select file  <input type="file" ngf-select ng-model="file" name="fileName"/>
+                                        </span>
+
+    <span ng-model="uploader.queue.last"></span>
+    <button type="button"
+            ng-click="uploadFile(file)"
+            class="btn btn-success custom-width">Upload new file
+
+    </button>
+    <label ng-show="equals({}, data) ">{{'form.text.notfinded' | translate}}</label>
+    <div class="form-group">
+        <label for="search">{{'form.text.search' | translate}}</label>
+        <input type="text" ng-model="search_query" ng-change="search(search_query)" class="form-control" id="search">
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{{'form.text.hash' | translate}}</th>
+            <th>{{'form.text.name' | translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(key, value) in data">
+            <td><span ng-bind="key"></span></td>
+            <td><a ng-href="{{'/fileserver?hash='+key}}">{{value}}</a></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="form-group">
+
+        <input type="text" ng-model="hash" ng-change="search(search_query)" class="form-control" id="searchHash">
+        <a ng-href="{{'/fileserver?hash='+hash}}">Download by hash</a>
+    </div>
 </div>
 </body>
 </html>

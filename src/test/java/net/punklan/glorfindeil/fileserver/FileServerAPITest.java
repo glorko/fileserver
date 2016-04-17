@@ -79,7 +79,7 @@ public class FileServerAPITest {
     @Test
     public void getByHash() throws Exception {
 
-        assertArrayEquals(api.getByHash(fileTestHash), file);
+        assertArrayEquals(api.getByHash(fileTestHash).getValue(), file);
     }
 
     @Test

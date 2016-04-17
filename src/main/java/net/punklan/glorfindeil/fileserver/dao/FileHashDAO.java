@@ -33,6 +33,9 @@ public class FileHashDAO {
      * @return True if the text matches the wildcard pattern
      */
     private static boolean match(String text, String pattern) {
+        if (pattern == null) {
+            return true;
+        }
         return text.matches(pattern.replace("?", ".?").replace("*", ".*?"));
     }
 
@@ -76,6 +79,6 @@ public class FileHashDAO {
     public String getPathByHash(String hash) {
         Object res = template.opsForHash().get(fileHashRedisKey, hash);
         if (res == null) return null;
-        return res+"";
+        return res + "";
     }
 }
