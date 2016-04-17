@@ -21,6 +21,13 @@ public class FileServerAPIRestWrapper {
     @Autowired
     FileServerAPI api;
 
+    /**
+     * Wrapper for multipart file upload with angular
+     * @param fileName
+     * @param file
+     * @return
+     * @throws FileServerAPIException
+     */
     @RequestMapping(value = "/fileserver", method = RequestMethod.POST)
     public
     @ResponseBody
@@ -33,6 +40,13 @@ public class FileServerAPIRestWrapper {
         }
     }
 
+    /**
+     * Wrapper for file downloading
+     * @param request
+     * @param response
+     * @param hash
+     * @throws FileServerAPIException
+     */
     @RequestMapping(value = "/fileserver", method = RequestMethod.GET)
     public void download(final HttpServletRequest request, final HttpServletResponse response, String hash) throws FileServerAPIException {
         Pair<String, byte[]> file = api.getByHash(hash);

@@ -19,6 +19,7 @@ import static net.punklan.glorfindeil.fileserver.api.FileServerAPIImpl.*;
 
 /**
  * Created by glorfindeil on 17.04.16.
+ * Initil crawler in files folder + redis in memory starter
  */
 @Component
 public class FileFolderMonitor {
@@ -31,6 +32,9 @@ public class FileFolderMonitor {
     @Value("${net.punklan.glorfindeil.working.folder}")
     String fileFolder;
 
+    /**
+     * Runs the redis and go over all files and put them hashes to redis storage (On server run)
+     */
     @PostConstruct
     public void init() {
         try {

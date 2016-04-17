@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * Created by glorfindeil on 17.04.16.
+ * DAO implementation for eeded operations with in memory redis database
  */
 
 @Repository
@@ -57,9 +58,7 @@ public class FileHashDAO {
                 System.out.println(entry.getKey() + " " + entry.getValue());
                 result.put(entry.getKey().toString(), entry.getValue().toString());
             }
-            /*cursor.forEachRemaining(n -> {
-                result.put(n.getKey() + "", n.getValue() + "");
-            });*/
+
         }
 
         return result;

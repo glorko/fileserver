@@ -19,10 +19,29 @@ public interface FileServerAPI {
      */
     public Boolean deleteByHash(String hash) throws FileServerAPIException;
 
+    /**
+     * Recieve pair filename-file as byte array by hash. Throw Exception if not finded
+     * @param hash
+     * @return
+     * @throws FileServerAPIException
+     */
     public Pair<String,byte[]> getByHash(String hash) throws FileServerAPIException;
 
+    /**
+     * Implementation of searching by value
+     * @param query
+     * @return
+     * @throws FileServerAPIException
+     */
     public Map<String, String> searchByQuery(String query) throws FileServerAPIException;
 
+    /**
+     * Uploads a new file
+     * @param fileName
+     * @param file
+     * @return
+     * @throws FileServerAPIException
+     */
     public String uploadFile(String fileName, byte[] file) throws FileServerAPIException;
 
 }

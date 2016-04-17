@@ -33,6 +33,8 @@ public class FileServerAPIImpl implements FileServerAPI {
     String fileFolder;
 
     public static String getFileHash(byte[] file) {
+
+        //ash generted by md5
         byte[] hash = DigestUtils.md5Digest(file);
         String md5 = new BigInteger(1, hash).toString(16);
         return md5;
