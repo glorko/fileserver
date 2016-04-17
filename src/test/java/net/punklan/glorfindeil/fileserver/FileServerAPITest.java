@@ -1,6 +1,7 @@
 package net.punklan.glorfindeil.fileserver;
 
 import net.punklan.glorfindeil.fileserver.api.FileServerAPI;
+import net.punklan.glorfindeil.fileserver.api.FileServerAPIException;
 import org.apache.commons.io.FileUtils;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -33,6 +34,8 @@ public class FileServerAPITest {
     @Value("${net.punklan.glorfindeil.working.folder}")
     String fileFolder;
 
+    String resourcesPath = "src/test/resources/";
+
     String fileTestHash;
     String testFileName = "testFile1.txt";
     byte[] file;
@@ -59,7 +62,7 @@ public class FileServerAPITest {
     public void setUp() throws Exception {
         FileUtils.deleteDirectory(new File(fileFolder));
         Files.createDirectory(Paths.get(fileFolder));
-        file = Files.readAllBytes(Paths.get(testFileName));
+        file = Files.readAllBytes(Paths.get(resourcesPath+testFileName));
         fileTestHash = api.uploadFile(testFileName, file);
     }
 
@@ -70,7 +73,7 @@ public class FileServerAPITest {
 
     @Test
     public void deleteByHash() throws Exception {
-        assertTrue(api.deleteByHash("testHash"));
+        assertTrue(api.deleteByHash(fileTestHash));
     }
 
     @Test
@@ -86,8 +89,15 @@ public class FileServerAPITest {
 
     @Test
     public void uploadFile() throws Exception {
-        byte[] file2 = Files.readAllBytes(Paths.get("testFile4.xml"));
+        byte[] file2 = Files.readAllBytes(Paths.get(resourcesPath+"testFile4.xml"));
         api.uploadFile("testFile4.xml", file2);
         assertEquals(api.searchByQuery("testFile*").size(), 2);
+    }
+
+    @Test(expected = FileServerAPIException.class)
+    public void uploadSameFile() throws FileServerAPIException, IOException {
+        byte[] file2 = Files.readAllBytes(Paths.get(resourcesPath+"testFile2.txt"));
+        api.uploadFile("testFile2.txt", file2);
+
     }
 }
