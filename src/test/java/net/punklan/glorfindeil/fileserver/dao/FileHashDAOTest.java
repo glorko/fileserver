@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.embedded.RedisServer;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
 /**
  * Created by glorfindeil on 17.04.16.
  */
-
+@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(FileServerApplication.class)
 @TestPropertySource(locations = "classpath:test.properties")
@@ -37,9 +38,10 @@ public class FileHashDAOTest {
     static RedisServer redisServer;
 
     @BeforeClass
-    public static void setUpAll() throws IOException {
+    public static void setUpAll() throws IOException, InterruptedException {
         redisServer = new RedisServer(6380);
         redisServer.start();
+        Thread.sleep(50);
     }
 
     @AfterClass

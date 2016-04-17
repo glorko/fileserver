@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 import redis.embedded.RedisServer;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +22,7 @@ import static net.punklan.glorfindeil.fileserver.api.FileServerAPIImpl.*;
  * Created by glorfindeil on 17.04.16.
  * Initil crawler in files folder + redis in memory starter
  */
+@ActiveProfiles("run")
 @Component
 public class FileFolderMonitor {
 
@@ -35,7 +37,7 @@ public class FileFolderMonitor {
     /**
      * Runs the redis and go over all files and put them hashes to redis storage (On server run)
      */
-    @PostConstruct
+
     public void init() {
         try {
             redisServer = new RedisServer(6380);

@@ -27,12 +27,13 @@ fileServer.controller('fileServerController', ['$scope', '$translate', '$locatio
                 function (d) {
                     $scope.search($scope.search_query);
                 }
-            ).catch(function(e){
-                BootstrapDialog.show({
-                    title: 'Error on upload',
-                    message: e.message
-                });
-                console.log(e.message);
-            })
+            )
+        }
+        $scope.delete = function(hash){
+            FileServerAPIService.deleteByHash(hash).then(
+                function(d){
+                    $scope.search($scope.search_query);
+                }
+            )
         }
     }]);

@@ -25,8 +25,9 @@ import java.util.Locale;
 public class FileServerApplication {
     public static void main(String[] args) {
         ApplicationContext ctx = SpringApplication.run(FileServerApplication.class, args);
-
+        ((FileFolderMonitor) ctx.getBean("fileFolderMonitor")).init();
     }
+
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
